@@ -62,7 +62,7 @@ An example of running and adding to your motd is shown under [scripts/update_mot
 
 ## Adding as a cronjob
 
-To add as a cronjob, you can use the [scripts/update_motd_through_cron.sh](scripts/update_motd_through_cron.sh) script with
+To add as a cronjob, you can use the [scripts/update_motd_through_crontab.sh](scripts/update_motd_through_crontab.sh) script with
 the following cronjob entry (note you will need to run this as the root user). Use `crontab -e` to edit your crontab.
 
 ### On reboot
