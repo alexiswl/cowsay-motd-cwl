@@ -1,0 +1,1 @@
+Use Ctrl+W to delete the contents of the current word to the left of the cursor

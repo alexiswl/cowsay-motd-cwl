@@ -1,0 +1,1 @@
+Use Ctrl+U to delete all contents to the left of the cursor

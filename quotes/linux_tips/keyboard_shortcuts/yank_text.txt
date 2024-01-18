@@ -1,0 +1,1 @@
+Use Ctrl+Y to paste the previously killed text by Ctrl+U/K/W

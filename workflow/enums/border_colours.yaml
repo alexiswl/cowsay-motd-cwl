@@ -1,0 +1,19 @@
+# List of appropriate border colours
+name: border_colours
+label: Border Colours
+type: enum
+symbols:
+  - red
+  - green
+  - yellow
+  - blue
+  - purple
+  - cyan
+  - lightgray
+  - lred
+  - lgreen
+  - lyellow
+  - lblue
+  - lpurple
+  - lcyan
+  - white
