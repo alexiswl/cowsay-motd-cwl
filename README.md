@@ -6,6 +6,7 @@ A CWL Workflow to generate a message of the day with helpful hints (from a cow!)
 
 ```bash
 # Set variables
+QUOTE=""
 QUOTES_DIR="$PWD/quotes"
 BORDER_COLOUR=""
 OUTPUT_FILENAME="motd.sh"
@@ -14,12 +15,20 @@ COW="default"
 # Run CWL Workflow
 cwltool --debug "workflow/motd_workflow.cwl" <( \
     jq --null-input --raw-output \
+     --arg quote "${QUOTE-}" \
      --arg quotes_dir "${QUOTES_DIR-}" \
      --arg border_colour "${BORDER_COLOUR-}" \
      --arg output_file_name "${OUTPUT_FILE_NAME-}" \
      --arg cow "${COW-}" \
      '
        {
+         "quote": (
+           if $quote == "" then
+             null
+           else
+             $quote
+           end
+         ),
          "quotes_dir": (
            if $quotes_dir == "" then
              null

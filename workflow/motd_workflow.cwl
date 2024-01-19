@@ -20,9 +20,14 @@ requirements:
       - $import: ./enums/border_colours.yaml
 
 inputs:
+  # Quote inputs
+  quote:
+    type: string?
+    doc: If specified, overwrites the use of quotes_dir and prints this specific quote
   quotes_dir:
     type: Directory?
     doc: If not specified, we will grab a quote from the fortune package instead
+  # User can specify the cow if they wish to
   cow:
     type: string?
     doc: Set to null, "" or "random" to get a random cow
@@ -60,10 +65,13 @@ steps:
       )
 
   # We need to convert to a string so that we can use pickValue in the get_cow_saying_quote_step
-  # We only run this when the contents of the file aren't null
-  # Because the random_file may not exist, we need to use the blank file so that we can check if the contents exist
-  # Because the expression uses 'loadContents' for this input, if we do not
-  # have the blank file, the expression will fail with
+  # Ideally our 'when' condition below would just be 'inputs.input_file !== null', and only run when our input_file doesn't exist
+  # However, because the CWL expression uses 'loadContents' on this input and this happens before the 'when' is evaluated for the step,
+  # cwltool tries to load input_file before even realising it doesn't exist and fails with the traceback below.
+  # As a workaround, we use the blank_file as a backup (for when the random file does not exist), since the pickValue is run
+  # before the 'when' and 'loadContents' evaluations.
+  # Now that we have our blank file as a backup, the step won't run if the random file doesn't exist because
+  # the 'when' will evaluate to false as the blank file has the contents ''
   # Traceback (most recent call last):
   #  File "/usr/lib/python3/dist-packages/cwltool/workflow_job.py", line 760, in try_make_job
   #    inputobj = postScatterEval(inputobj)
@@ -111,6 +119,7 @@ steps:
         pickValue: first_non_null
       quote:
         source:
+          - quote
           - get_random_quote_as_string/output_string
           - get_random_quote_from_fortune_package/profound_quote
         pickValue: first_non_null
@@ -150,6 +159,7 @@ steps:
     run: ./expressions/write_string_to_file.cwl
 
 outputs:
+  # The output is a file with quote
   cow_with_quote:
     type: File
     outputSource: cow_as_file_step/output_file
