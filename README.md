@@ -61,23 +61,9 @@ chmod 755 "${OUTPUT_FILENAME}"
 bash "${OUTPUT_FILENAME}"
 ```
 
-Yields (imagine the border is red)
+Yields
 
-```
-______________________________________________
-----------------------------------------------
-|| ______________________________________   ||
-|| / Use Ctrl+U to delete all contents to \ ||
-|| \ the left of the cursor               / ||
-||  --------------------------------------  ||
-||         \   ^__^                         ||
-||          \  (oo)\_______                 ||
-||             (__)\       )\/\             ||
-||                 ||----w |                ||
-||                 ||     ||                ||
-----------------------------------------------
-‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-```
+![images/default_cow_with_quote.png](images/default_cow_with_quote.png)
 
 ## Adding to your MOTD
 
