@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Set to fail
+set -euo pipefail
+
 # GLOBALS
 FINAL_OUTPUT_DIRECTORY="/etc/update-motd.d/"
 FINAL_OUTPUT_FILE_NAME="99-hint"
@@ -13,6 +16,14 @@ BORDER_COLOUR="red"
 QUOTES_DIR="${COWSAY_CWL_HOME}/quotes/"
 OUTPUT_FILENAME="cowsay.sh"
 
+# Run a trap on exit
+cleanup() {
+  rv=$?
+  rm -rf "${cwltool_run_dir}"
+  exit $rv
+}
+trap 'cleanup' EXIT
+
 # Workdir
 cwltool_run_dir="$(mktemp -d)"
 
@@ -23,7 +34,7 @@ cwltool_run_dir="$(mktemp -d)"
   if [[ -z "${COWSAY_CWL_HOME}" || ! -d "${COWSAY_CWL_HOME}" ]]; then
     COWSAY_CWL_HOME="$PWD/$(basename "${COWSAY_CWL_GITHUB_REPO}")"
     # Clone cowsay-motd-cwl
-    git clone "${COWSAY_CWL_GITHUB_REPO}";
+    git clone -b "main" "${COWSAY_CWL_GITHUB_REPO}";
   fi
 
   cwltool "${COWSAY_CWL_HOME}/workflow/motd_workflow.cwl" <( \
@@ -48,3 +59,6 @@ cwltool_run_dir="$(mktemp -d)"
 
 # Delete our temp dirs
 rm -rf "${cwltool_run_dir}"
+
+# No need for the trap now, exit cleanly
+trap - EXIT
