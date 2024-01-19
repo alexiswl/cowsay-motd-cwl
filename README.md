@@ -6,24 +6,50 @@ A CWL Workflow to generate a message of the day with helpful hints (from a cow!)
 
 ```bash
 # Set variables
-QUOTES_DIR="quotes"
-BORDER_COLOUR="red"
+QUOTES_DIR="$PWD/quotes"
+BORDER_COLOUR=""
 OUTPUT_FILENAME="motd.sh"
+COW="default"
 
 # Run CWL Workflow
-cwltool "workflow/motd_workflow.cwl" <( \
+cwltool --debug "workflow/motd_workflow.cwl" <( \
     jq --null-input --raw-output \
-     --arg quotes_dir "${QUOTES_DIR}" \
-     --arg border_colour "${BORDER_COLOUR}" \
-     --arg output_filename "${OUTPUT_FILENAME}" \
+     --arg quotes_dir "${QUOTES_DIR-}" \
+     --arg border_colour "${BORDER_COLOUR-}" \
+     --arg output_file_name "${OUTPUT_FILE_NAME-}" \
+     --arg cow "${COW-}" \
      '
        {
-         "quotes_dir": {
-           "class": "Directory",
-           "location": $quotes_dir
-         },
-         "border_colour": $border_colour,
-         "output_file_name": $output_filename
+         "quotes_dir": (
+           if $quotes_dir == "" then
+             null
+           else {
+             "class": "Directory",
+             "location": $quotes_dir
+           }
+           end
+         ),
+         "border_colour": (
+           if $border_colour == "" then
+             null
+           else
+             $border_colour
+           end
+         ),
+         "output_file_name": (
+           if $output_file_name == "" then
+             null
+           else
+             $output_file_name
+           end
+         ),
+         "cow": (
+           if $cow == "" then
+             null
+           else
+             $cow
+           end
+         )
        }
      '
   );
@@ -35,23 +61,9 @@ chmod 755 "${OUTPUT_FILENAME}"
 bash "${OUTPUT_FILENAME}"
 ```
 
-Yields (imagine the border is red)
+Yields
 
-```
-_________________________________________________
--------------------------------------------------
-|| _________________________________________   ||
-|| / Use Alt+D to delete the contents of the \ ||
-|| \ current word to the right of the cursor / ||
-||  -----------------------------------------  ||
-||   \                                         ||
-||    \   \                                    ||
-||         \ /\                                ||
-||         ( )                                 ||
-||       .( o ).                               ||
--------------------------------------------------
-‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
-```
+![images/default_cow_with_quote.png](images/default_cow_with_quote.png)
 
 ## Adding to your MOTD
 
