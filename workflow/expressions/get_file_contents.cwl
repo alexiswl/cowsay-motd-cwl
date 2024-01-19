@@ -16,34 +16,28 @@ s:author:
   s:identifier: https://orcid.org/0000-0001-9754-647X
 
 # ID / Docs
-id: write-string-to-file
-label: Write string to file
+id: get-file-contents
+label: Get file contents
 doc: |
-  From a string, populate a file object with the contents of that string,
-  assign the file basename to the input output_file_name
+  From a file object, return the contents attribute string
 
 requirements:
     InlineJavascriptRequirement: {}
 
 inputs:
-  input_string:
-    type: string
-  output_file_name:
-    type: string
+  input_file:
+    type: File
+    loadContents: true
 
 outputs:
-  output_file:
-    type: File
+  output_string:
+    type: string
     doc: |
-      The output file containing the contents provided by input_string
+      The contents of the file
 
 expression: |
   ${
     return {
-      "output_file": {
-        "class": "File",
-        "basename": inputs.output_file_name,
-        "contents": inputs.input_string
-      }
+      "output_string": inputs.input_file.contents
     };
   }

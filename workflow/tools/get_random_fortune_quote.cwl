@@ -17,42 +17,31 @@ s:author:
   s:identifier: https://orcid.org/0000-0001-9754-647X
 
 # ID / Docs
-id: get-random-cow
-label: Select a random cow
+id: get-random-fortune-quote
+label: Get a random fortune quote
 doc: |
-  Run cowsay
+  Run the fortune command and return the output
 
 requirements:
   InlineJavascriptRequirement: {}
   DockerRequirement:
-    dockerPull: docker.io/chuanwen/cowsay:latest
+    dockerPull: ghcr.io/alexiswl/cowsay:latest
 
-inputs:
-  cow:
-    type: string
-    inputBinding:
-      position: 1
-      prefix: -f
-      valueFrom: |
-        ${
-          return "/usr/share/cowsay/cows/" + self + ".cow";
-        }
-  quote:
-    type: string
-    inputBinding:
-      position: 2
+# No inputs
+inputs: []
 
-baseCommand: [ "/usr/games/cowsay" ]
+# Outputs
+baseCommand: [ "fortune" ]
 
 stdout: stdout
 
 outputs:
-  cow_with_quote:
+  profound_quote:
     type: string
     outputBinding:
       glob: stdout
       loadContents: true
       outputEval: |
         ${
-          return self[0].contents.toString().trim();
+          return self[0].contents.trim();
         }
