@@ -1,4 +1,4 @@
-cwlVersion: v1.1
+cwlVersion: v1.2
 class: ExpressionTool
 
 # Extensions
@@ -110,7 +110,6 @@ requirements:
           Collect all files in a directory recursively
           */
           var all_files = [];
-          console.log(directory);
           directory.listing.forEach(function(file_obj) {
               if (file_obj.class == "Directory") {
                 all_files = all_files.concat(listAllFilesInDirectoryRecursively(file_obj));
