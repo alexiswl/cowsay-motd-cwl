@@ -25,7 +25,7 @@ doc: |
 requirements:
   InlineJavascriptRequirement: {}
   DockerRequirement:
-    dockerPull: docker.io/chuanwen/cowsay:latest
+    dockerPull: ghcr.io/alexiswl/cowsay:latest
 
 inputs:
   cow:
@@ -35,14 +35,14 @@ inputs:
       prefix: -f
       valueFrom: |
         ${
-          return "/usr/share/cowsay/cows/" + self + ".cow";
+          return "/usr/share/cows/" + self + ".cow";
         }
   quote:
     type: string
     inputBinding:
       position: 2
 
-baseCommand: [ "/usr/games/cowsay" ]
+baseCommand: [ "/usr/bin/cowsay" ]
 
 stdout: stdout
 
