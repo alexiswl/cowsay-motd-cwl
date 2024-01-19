@@ -3,6 +3,9 @@
     build_container:
       name: Build Container
       runs-on: ubuntu-latest
+      permissions:
+        contents: read
+        packages: write
       steps:
         # Standard checkout step
         - name: Checkout code
