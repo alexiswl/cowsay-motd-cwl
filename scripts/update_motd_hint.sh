@@ -34,7 +34,7 @@ cwltool_run_dir="$(mktemp -d)"
   if [[ -z "${COWSAY_CWL_HOME}" || ! -d "${COWSAY_CWL_HOME}" ]]; then
     COWSAY_CWL_HOME="$PWD/$(basename "${COWSAY_CWL_GITHUB_REPO}")"
     # Clone cowsay-motd-cwl
-    git clone -b "main" "${COWSAY_CWL_GITHUB_REPO}";
+    git clone --depth 1 --branch "main" "${COWSAY_CWL_GITHUB_REPO}";
   fi
 
   quotes_dir="${QUOTES_DIR/__COWSAY_CWL_HOME__/$COWSAY_CWL_HOME}"
