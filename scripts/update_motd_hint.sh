@@ -13,7 +13,7 @@ COWSAY_CWL_GITHUB_REPO="https://github.com/alexiswl/cowsay-motd-cwl"
 
 # CWL / COWSAY VARS
 BORDER_COLOUR="red"
-QUOTES_DIR="${COWSAY_CWL_HOME}/quotes/"
+QUOTES_DIR="__COWSAY_CWL_HOME__/quotes/"
 OUTPUT_FILENAME="cowsay.sh"
 
 # Run a trap on exit
@@ -34,12 +34,14 @@ cwltool_run_dir="$(mktemp -d)"
   if [[ -z "${COWSAY_CWL_HOME}" || ! -d "${COWSAY_CWL_HOME}" ]]; then
     COWSAY_CWL_HOME="$PWD/$(basename "${COWSAY_CWL_GITHUB_REPO}")"
     # Clone cowsay-motd-cwl
-    git clone -b "main" "${COWSAY_CWL_GITHUB_REPO}";
+    git clone --depth 1 --branch "main" "${COWSAY_CWL_GITHUB_REPO}";
   fi
+
+  quotes_dir="${QUOTES_DIR/__COWSAY_CWL_HOME__/$COWSAY_CWL_HOME}"
 
   cwltool "${COWSAY_CWL_HOME}/workflow/motd_workflow.cwl" <( \
     jq --null-input --raw-output \
-     --arg quotes_dir "${QUOTES_DIR}" \
+     --arg quotes_dir "${quotes_dir}" \
      --arg border_colour "${BORDER_COLOUR}" \
      --arg output_filename "${OUTPUT_FILENAME}" \
      '
